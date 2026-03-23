@@ -1,6 +1,9 @@
 from fastapi import APIRouter, UploadFile, File, HTTPException
+import time
+from datetime import datetime
 from app.services.pdf_service import pdf_service
 from app.services.ai_service import ai_service
+from app.store import claims_store
 
 router = APIRouter(prefix="/api/claims", tags=["Claims"])
 
@@ -25,6 +28,7 @@ async def process_claim(
             detail="Only PDF files are supported"
         )
     
+    start_time = time.time()
     try:
         # Read the uploaded file
         pdf_content = await file.read()
@@ -52,15 +56,38 @@ async def process_claim(
         if extract_data:
             claim_result = await ai_service.extract_claim_data(cleaned_text)
             
+            processing_time = time.time() - start_time
+            fraud_flag = False
+            
             if claim_result["success"]:
+                extracted = claim_result.get("extracted_data", {})
+                fraud_flag = extracted.get("fraud_flag", False) if isinstance(extracted, dict) else False
+                claimant_name = extracted.get("Claimant Name", extracted.get("claimant_name", "Unknown")) if isinstance(extracted, dict) else "Unknown"
+                claim_amount = extracted.get("Claim Amount", extracted.get("claim_amount", "$0")) if isinstance(extracted, dict) else "$0"
+                
                 response["claim_data"] = {
-                    "extracted_info": claim_result["extracted_data"],
+                    "extracted_info": extracted,
                     "ai_metadata": {
                         "model": claim_result["model"],
                         "tokens_used": claim_result["tokens_used"],
                         "cost": claim_result["cost_estimate"]
                     }
                 }
+                
+                # Check if it was actually a claim before storing
+                if isinstance(extracted, dict) and extracted.get("is_claim") is not False:
+                    claims_store.append({
+                        "id": f"CLM-{datetime.now().strftime('%Y%m%d')}-{len(claims_store)+1:03d}",
+                        "timestamp": datetime.now().isoformat(),
+                        "filename": file.filename,
+                        "claimant_name": claimant_name,
+                        "claim_amount": claim_amount,
+                        "status": "Review" if fraud_flag else "Approved",
+                        "fraud_flag": fraud_flag,
+                        "processing_time_s": round(processing_time, 2),
+                        "model": claim_result["model"]
+                    })
+                    
             else:
                 response["claim_data"] = {
                     "error": claim_result.get("error", "AI extraction failed")

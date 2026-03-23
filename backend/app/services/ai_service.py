@@ -46,6 +46,11 @@ Extract these fields if present:
 - Description of Incident
 - Contact Information
 
+Additionally, analyze the extracted data for potential fraud and confidence:
+- "confidence_score": integer between 0-100 indicating extraction quality
+- "fraud_flag": boolean indicating if suspicious patterns exist (e.g., highly unusual amounts, vague descriptions)
+- "fraud_reasoning": string explaining the fraud_flag securely (empty or "N/A" if low risk)
+
 Claim Document:
 {claim_text}
 
