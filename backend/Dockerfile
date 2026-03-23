@@ -3,7 +3,7 @@ FROM python:3.9-slim
 WORKDIR /app
 
 # Install poetry
-RUN pip install poetry==1.7.0
+RUN pip install poetry
 
 # Copy poetry files
 COPY pyproject.toml poetry.lock* ./
