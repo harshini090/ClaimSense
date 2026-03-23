@@ -1,0 +1,29 @@
+services:
+  # Backend Python API
+  - type: web
+    name: claim-sense-backend
+    env: python
+    buildCommand: "cd backend && pip install poetry==1.7.0 && poetry config virtualenvs.create false && poetry install --no-root --without dev"
+    startCommand: "cd backend && uvicorn app.main:app --host 0.0.0.0 --port $PORT"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.9.0
+      - key: ENVIRONMENT
+        value: production
+      - key: ANTHROPIC_API_KEY
+        sync: false # You will need to input this manually in Render dashboard
+
+  # Frontend Next.js App
+  - type: web
+    name: claim-sense-frontend
+    env: node
+    buildCommand: "cd frontend && npm install && npm run build"
+    startCommand: "cd frontend && npm run start"
+    envVars:
+      - key: NODE_VERSION
+        value: 18.17.0
+      - key: NEXT_PUBLIC_API_URL
+        fromService:
+          type: web
+          name: claim-sense-backend
+          envVarKey: RENDER_EXTERNAL_URL
