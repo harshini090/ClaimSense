@@ -1,123 +1,92 @@
-# ClaimSense AI
-
-> **Intelligence built into the design.**
+# 🏛️ ClaimSense AI
+> **Intelligence built into the design.**  
 > A next-generation insurance claim processing platform engineered for speed, accuracy, and absolute clarity.
 
 <p align="center">
   <img src="assets/demo.webp" alt="ClaimSense Swiss Design Demo" width="100%">
 </p>
 
-## 🌟 Overview
-**ClaimSense** leverages advanced Large Language Models (Claude 3.5 Sonnet) to analyze claim documents in real-time. It provides immediate risk assessment, intelligent data extraction, and fraud heuristic capabilities—all wrapped in a stark, "Swiss International / Braun" inspired design system.
-
-## ✨ Key Features
-- **Objectively Beautiful UI**: Pure white backgrounds, jet black typography, and strict 12-column grid alignment. Designed with the philosophy that "perfection is achieved when there is nothing left to take away."
-- **AI-Powered Analysis**: Automatically extracts claimant data, policy numbers, incident descriptions, and calculates totals from unstructured PDF/Image uploads.
-- **Intelligent Risk Assessment**: Evaluates potential fraud patterns and flags claims as Low, Medium, or High Risk with cited reasoning.
-- **Dual Verification Modes**: Seamlessly switch between a clean visual summary for adjusters and raw JSON data for developers.
-
-## 🛠 Technology Stack
-- **Frontend Core**: Next.js 14, React 18, TypeScript
-- **Styling UI/UX**: Tailwind CSS (Custom "Swiss" aesthetic), Framer Motion, Lucide Icons
-- **Backend API**: Python 3.9, FastAPI, Uvicorn (managed by Poetry)
-- **AI Engine**: Anthropic Claude 3.5 Sonnet Integration
-- **Infrastructure**: Azure App Services, Docker, GitHub Actions (CI/CD)
+## 🌟 The Vision
+Insurance claim processing is traditionally bogged down by manual data entry, unstructured PDFs, and slow risk assessment. **ClaimSense** shifts this paradigm by leveraging advanced Large Language Models to analyze claim documents in real-time, instantly extracting vital data and flagging potential fraud—all wrapped in a stark, "Swiss International / Braun" inspired design system.
 
 ---
 
-## 🚀 Getting Started
+## ✨ Core Capabilities
+
+- **🧠 Real-time AI Extraction**: Powered by **Claude 3.5 Sonnet**, ClaimSense instantly parses unstructured PDF and image uploads to extract claimant data, policy numbers, incident descriptions, and calculate claim totals.
+- **🛡️ Intelligent Fraud Detection**: Evaluates incidents for potential fraud patterns, returning a comprehensive risk assessment (Low, Medium, or High Risk) with logically cited reasoning.
+- **👁️ Objectively Beautiful UI**: Designed with the philosophy that "perfection is achieved when there is nothing left to take away." Pure white backgrounds, jet black typography, and strict 12-column grid alignment.
+- **🔄 Developer-First Transparency**: Seamlessly switch between a clean visual summary for adjusters and raw JSON data payloads for developers.
+
+---
+
+## 🛠 Technology Stack
+
+### Frontend Architecture
+![Next JS](https://img.shields.io/badge/Next-black?style=for-the-badge&logo=next.js&logoColor=white)
+![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
+![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![Framer](https://img.shields.io/badge/Framer-black?style=for-the-badge&logo=framer&logoColor=blue)
+- **Framework**: Next.js 14 (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS (Custom Monochromatic Aesthetic)
+- **Animations**: Framer Motion
+
+### Backend Engine
+![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
+![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi)
+![Claude](https://img.shields.io/badge/Claude%203.5-Anthropic-D97757?style=for-the-badge&logo=anthropic)
+![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
+- **Framework**: FastAPI (High-performance asynchronous API)
+- **Language**: Python 3.9
+- **AI Brain**: Anthropic API (`claude-3-5-sonnet-20241022`)
+- **Containerization**: Docker Multi-stage Builds
+
+---
+
+## 🚀 Local Development Setup
+
+ClaimSense is fully containerized for a scalable, environment-agnostic deployment. 
 
 ### Prerequisites
-- Node.js (v18+)
-- Python (v3.9+)
-- Poetry (for Python dependency management)
-- Docker (for containerized environments)
+- Docker & Docker Compose
+- An Anthropic API Key (`claude-3-5-sonnet`)
 
-### 1. Local Development Setup
-
-#### Backend Infrastructure
-The backend is a high-performance FastAPI service.
+### 1. Backend (FastAPI) Setup
 ```bash
-git clone https://github.com/harshini090/insurance-claim-ai.git
-cd insurance-claim-ai/backend
-
-# Install dependencies using Poetry
-poetry install
+git clone https://github.com/harshini090/ClaimSense.git
+cd ClaimSense/backend
 
 # Configure Environment Variables
-# Create a .env file in the backend directory:
 echo "ANTHROPIC_API_KEY=your_api_key_here" > .env
 echo "ENVIRONMENT=development" >> .env
 
-# Launch the Uvicorn Dev Server
-poetry run uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
-```
-> The API will be available at [http://127.0.0.1:8000](http://127.0.0.1:8000) (Swagger UI at `/docs`)
-
-#### Frontend Infrastructure
-The user interface is powered by Next.js.
-```bash
-cd ../frontend
-
-# Install dependencies
-npm install
-
-# Optional: Add environment variables if your backend URL differs
-# echo "NEXT_PUBLIC_API_URL=http://127.0.0.1:8000" > .env.local
-
-# Launch the Next.js Dev Server
-npm run dev
-```
-> Access the UI at [http://localhost:3000](http://localhost:3000) (or whichever port Next.js assigns).
-
----
-
-## 🐳 Docker Deployment
-
-ClaimSense is fully containerized for scalable, environment-agnostic deployment.
-
-**Build the Backend Container:**
-```bash
-cd backend
+# Build and run with Docker
 docker build -t claim-backend:latest .
 docker run -p 8000:8000 --env-file .env claim-backend:latest
 ```
+> The API will be available at `http://127.0.0.1:8000` (Interactive Docs at `/docs`)
 
-**Build the Frontend Container:**
+### 2. Frontend (Next.js) Setup
 ```bash
-cd frontend
-docker build -f Dockerfile.frontend -t claim-frontend:latest .
-docker run -p 3000:3000 claim-frontend:latest
+cd ../frontend
+
+# Configure API target
+echo "NEXT_PUBLIC_API_URL=http://127.0.0.1:8000" > .env.local
+
+# Run Next.js locally
+npm install
+npm run dev
 ```
+> Access the UI at `http://localhost:3000`
 
 ---
 
-## ☁️ Azure Cloud Deployment (CI/CD)
+## ☁️ Deployment Strategy
 
-This project features enterprise-grade CI/CD pipelines configured for **Azure Web Apps** via GitHub Actions.
-
-1. **Azure Container Registry (ACR):** The pipeline builds Docker images for both frontend and backend and pushes them to your configured Azure Container Registry.
-2. **Azure Web Apps deployed via Containers:** 
-   - Backend API (`claim-sense-backend`)
-   - Frontend UI (`claim-sense-frontend`)
-3. **Automated Trigger:** Any push to the `main` branch automatically triggers the `azure-deploy.yml` workflow.
-
-### Required GitHub Secrets for Azure:
-Ensure the following secrets are configured in your repository settings:
-- `AZURE_CREDENTIALS`
-- `REGISTRY_LOGIN_SERVER`
-- `REGISTRY_USERNAME`
-- `REGISTRY_PASSWORD`
-- `AZURE_BACKEND_PUBLISH_PROFILE`
-- `AZURE_FRONTEND_PUBLISH_PROFILE`
-
----
-
-## 📐 Design Philosophy
-The UI follows the **Swiss International Style** (International Typographic Style), heavily relying on:
-- **Monochromatic Palette**: Absolute contrast (`#FFFFFF` & `#000000`) with structural greys.
-- **Typography-First Approach**: **Inter** (Grotesk Sans-Serif).
-- **Subtlety**: Hover states and micro-animations provide tactile feedback without visual clutter.
+The application is designed to be completely decoupled.
+- The **Frontend** can be statically exported and hosted on Vercel, Netlify, or GitHub Pages.
+- The **Backend** is completely containerized (`backend/Dockerfile`) utilizing a stable `requirements.txt` environment, ensuring deployment to any PaaS (Render, Google Cloud Run, Azure Container Apps) is trivial and resistant to package manager conflicts.
 
 ## 📄 License
 MIT License.
