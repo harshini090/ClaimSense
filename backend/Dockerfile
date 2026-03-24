@@ -2,17 +2,11 @@ FROM python:3.9-slim
 
 WORKDIR /app
 
-# Install poetry
-RUN pip install poetry
-
-# Copy poetry files
-COPY pyproject.toml poetry.lock* ./
-
-# Configure poetry to not use virtual envs
-RUN poetry config virtualenvs.create false
+# Copy requirements
+COPY requirements.txt ./
 
 # Install dependencies
-RUN poetry install --no-root --without dev
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy app code
 COPY . .
