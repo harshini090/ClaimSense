@@ -3,7 +3,7 @@
 > A next-generation insurance claim processing platform engineered for speed, accuracy, and absolute clarity.
 
 <p align="center">
-  <img src="assets/demo.webp" alt="ClaimSense Swiss Design Demo" width="100%">
+  <img src="assets/demo.webp?raw=true" alt="ClaimSense Live Interface Demo" width="100%">
 </p>
 
 ## 🌟 The Vision
